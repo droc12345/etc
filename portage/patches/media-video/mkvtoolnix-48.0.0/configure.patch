@@ -1,0 +1,13 @@
+--- a/configure	2019-08-24 03:04:21.000000000 -0500
++++ b/configure	2020-08-18 06:56:32.285066135 -0500
+@@ -9189,9 +9189,9 @@
+   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+   test $ac_status = 0; }; then
+   with_qt_pkg_config_modules="$with_qt_pkg_config_modules,Qt5DBus"
++  $as_echo "#define HAVE_QTDBUS 1" >>confdefs.h
+ fi
+ 
+-$as_echo "#define HAVE_QTDBUS 1" >>confdefs.h
+ 
+     fi
+ 

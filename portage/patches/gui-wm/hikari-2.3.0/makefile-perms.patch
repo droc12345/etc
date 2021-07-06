@@ -1,0 +1,15 @@
+--- a/Makefile	2021-04-09 12:37:23.000000000 -0500
++++ b/Makefile	2021-04-18 06:26:25.288653193 -0500
+@@ -114,11 +114,7 @@
+ CFLAGS += -DHAVE_LAYERSHELL=1
+ .endif
+ 
+-.ifdef WITH_SUID
+-PERMS = 4555
+-.else
+-PERMS = 555
+-.endif
++PERMS = 755
+ 
+ .ifdef WITH_VIRTUAL_INPUT
+ CFLAGS += -DHAVE_VIRTUAL_INPUT=1

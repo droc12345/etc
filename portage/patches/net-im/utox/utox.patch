@@ -1,0 +1,11 @@
+--- uTox-0.16.1/src/xlib/gtk.c.orig	2019-09-06 08:41:40.569397136 -0500
++++ uTox-0.16.1/src/xlib/gtk.c	2019-09-06 08:42:07.888734532 -0500
+@@ -24,7 +24,7 @@
+ #include <stdlib.h>
+ #include <string.h>
+ 
+-#define LIBGTK_FILENAME "libgtk-3.so"
++#define LIBGTK_FILENAME "libgtk-x11-2.0.so"
+ 
+ #define GTK_FILE_CHOOSER_ACTION_OPEN 0
+ #define GTK_FILE_CHOOSER_ACTION_SAVE 1

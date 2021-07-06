@@ -1,0 +1,11 @@
+--- a/src/rounded-corners.cpp	2021-04-17 19:57:33.034418171 -0500
++++ b/src/rounded-corners.cpp	2021-04-17 19:58:10.089162248 -0500
+@@ -38,7 +38,7 @@
+ uniform mediump vec2 full_bottom_right;
+ 
+ // Rounding radius
+-const mediump float radius = 20.0;
++const mediump float radius = 5.0;
+ 
+ void main()
+ {

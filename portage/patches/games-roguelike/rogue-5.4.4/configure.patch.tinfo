@@ -1,0 +1,20 @@
+--- a/configure	2019-08-03 05:03:46.567948562 -0500
++++ b/configure	2019-08-03 05:40:31.419721072 -0500
+@@ -4095,7 +4095,7 @@
+ if test "${mp_cv_curses+set}" = set; then
+   echo $ECHO_N "(cached) $ECHO_C" >&6
+ else
+-  LIBS="$LIBS -lcurses"
++  LIBS="$LIBS -lcurses -ltinfo"
+         cat >conftest.$ac_ext <<_ACEOF
+ /* confdefs.h.  */
+ _ACEOF
+@@ -4160,7 +4160,7 @@
+ if test "${mp_cv_ncurses+set}" = set; then
+   echo $ECHO_N "(cached) $ECHO_C" >&6
+ else
+-  LIBS="$mp_save_LIBS -lncurses"
++  LIBS="$mp_save_LIBS -lncurses -ltinfo"
+         cat >conftest.$ac_ext <<_ACEOF
+ /* confdefs.h.  */
+ _ACEOF

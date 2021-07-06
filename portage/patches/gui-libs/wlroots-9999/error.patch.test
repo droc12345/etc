@@ -1,0 +1,11 @@
+--- a/xwayland/xwm.c	2021-03-25 13:09:07.292981199 -0500
++++ b/xwayland/xwm.c	2021-03-25 13:39:01.887074942 -0500
+@@ -1372,7 +1372,7 @@
+ 		goto log_raw;
+ 	}
+ 
+-	wlr_log(WLR_ERROR, "xcb error: op %s (%s), code %s (%s), sequence %"PRIu16", value %"PRIu32,
++	wlr_log(WLR_DEBUG, "xcb error: op %s (%s), code %s (%s), sequence %"PRIu16", value %"PRIu32,
+ 		major_name, minor_name ? minor_name : "no minor",
+ 		error_name, extension ? extension : "no extension",
+ 		ev->sequence, ev->bad_value);

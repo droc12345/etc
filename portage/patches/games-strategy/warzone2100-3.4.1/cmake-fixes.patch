@@ -1,0 +1,88 @@
+
+--- a/lib/ivis_opengl/CMakeLists.txt	2020-07-19 11:57:08.000000000 -0500
+--- b/lib/ivis_opengl/CMakeLists.txt	2020-09-28 12:17:00.315735012 -0500
+@@ -48,7 +48,7 @@
+ find_package(Freetype REQUIRED)
+ find_package(Harfbuzz 1.0 REQUIRED)
+ 
+-add_library(ivis-opengl ${HEADERS} ${SRC})
++add_library(ivis-opengl STATIC ${HEADERS} ${SRC})
+ set_property(TARGET ivis-opengl PROPERTY FOLDER "lib")
+ if(WZ_TARGET_ADDITIONAL_PROPERTIES)
+ 	SET_TARGET_PROPERTIES(ivis-opengl PROPERTIES ${WZ_TARGET_ADDITIONAL_PROPERTIES})
+
+--- a/lib/sdl/CMakeLists.txt	2020-07-19 11:57:08.000000000 -0500
+--- b/lib/sdl/CMakeLists.txt	2020-09-28 12:17:09.299672749 -0500
+@@ -91,7 +91,7 @@
+ 	endif()
+ endif()
+ 
+-add_library(sdl-backend ${HEADERS} ${SRC})
++add_library(sdl-backend STATIC ${HEADERS} ${SRC})
+ if(WZ_TARGET_ADDITIONAL_PROPERTIES)
+ 	SET_TARGET_PROPERTIES(sdl-backend PROPERTIES ${WZ_TARGET_ADDITIONAL_PROPERTIES})
+ endif()
+
+--- a/lib/sequence/CMakeLists.txt	2020-07-19 11:57:08.000000000 -0500
+--- b/lib/sequence/CMakeLists.txt	2020-09-28 12:17:16.147625292 -0500
+@@ -8,7 +8,7 @@
+ find_package(OggVorbis REQUIRED)
+ find_package(Theora REQUIRED)
+ 
+-add_library(sequence ${HEADERS} ${SRC})
++add_library(sequence STATIC ${HEADERS} ${SRC})
+ set_property(TARGET sequence PROPERTY FOLDER "lib")
+ if(WZ_TARGET_ADDITIONAL_PROPERTIES)
+ 	SET_TARGET_PROPERTIES(sequence PROPERTIES ${WZ_TARGET_ADDITIONAL_PROPERTIES})
+
+--- a/lib/sound/CMakeLists.txt	2020-07-19 11:57:08.000000000 -0500
+--- b/lib/sound/CMakeLists.txt	2020-09-28 12:17:25.459560758 -0500
+@@ -31,7 +31,7 @@
+ CHECK_INCLUDE_FILE_CXX("AL/alext.h" HAVE_OPENAL_ALEXT_H)
+ cmake_pop_check_state()
+ 
+-add_library(sound ${HEADERS} ${SRC})
++add_library(sound STATIC ${HEADERS} ${SRC})
+ set_property(TARGET sound PROPERTY FOLDER "lib")
+ if(WZ_TARGET_ADDITIONAL_PROPERTIES)
+ 	SET_TARGET_PROPERTIES(sound PROPERTIES ${WZ_TARGET_ADDITIONAL_PROPERTIES})
+
+--- a/lib/widget/CMakeLists.txt	2020-07-19 11:57:08.000000000 -0500
+--- b/lib/widget/CMakeLists.txt	2020-09-28 12:17:33.011508424 -0500
+@@ -4,7 +4,7 @@
+ file(GLOB HEADERS "*.h")
+ file(GLOB SRC "*.cpp")
+ 
+-add_library(widget ${HEADERS} ${SRC})
++add_library(widget STATIC ${HEADERS} ${SRC})
+ set_property(TARGET widget PROPERTY FOLDER "lib")
+ if(WZ_TARGET_ADDITIONAL_PROPERTIES)
+ 	SET_TARGET_PROPERTIES(widget PROPERTIES ${WZ_TARGET_ADDITIONAL_PROPERTIES})
+
+--- a/src/CMakeLists.txt	2020-07-19 11:57:08.000000000 -0500
+--- b/src/CMakeLists.txt	2020-09-28 12:16:21.532003800 -0500
+@@ -106,6 +106,10 @@
+ 	Qt5::Gui
+ 	Qt5::Widgets
+ )
++
++find_package(ZLIB)
++target_link_libraries(warzone2100 ZLIB::ZLIB)
++
+ target_link_libraries(warzone2100 launchinfo EmbeddedJSONSignature)
+ if(ENABLE_NLS)
+ 	target_link_libraries(warzone2100 "${Intl_LIBRARIES}")
+
+
+--- a/3rdparty/re2/CMakeLists.txt	2020-07-19 11:57:21.000000000 -0500
++++ b/3rdparty/re2/CMakeLists.txt	2020-09-28 13:20:52.250377875 -0500
+@@ -83,7 +83,7 @@
+     util/strutil.cc
+     )
+ 
+-add_library(re2 ${RE2_SOURCES})
++add_library(re2 STATIC ${RE2_SOURCES})
+ add_library(re2::re2 ALIAS re2)
+ 
+ if(RE2_BUILD_TESTING)
+

@@ -1,0 +1,19 @@
+--- a/xwayland/server.c	2021-05-14 15:01:40.747360823 -0500
++++ b/xwayland/server.c	2021-05-14 15:03:23.284663229 -0500
+@@ -63,6 +63,7 @@
+ 
+ 	char *argv[] = {
+ 		"Xwayland", NULL /* display, e.g. :1 */,
++		"-dpi", "163", "-auth", "/home/don/.Xauthority",
+ 		"-rootless", "-terminate", "-core",
+ #if HAVE_XWAYLAND_LISTENFD
+ 		"-listenfd", NULL /* x_fd[0] */,
+@@ -96,7 +97,7 @@
+ 	snprintf(wayland_socket_str, sizeof(wayland_socket_str), "%d", server->wl_fd[1]);
+ 	setenv("WAYLAND_SOCKET", wayland_socket_str, true);
+ 
+-	wlr_log(WLR_INFO, "WAYLAND_SOCKET=%d Xwayland :%d -rootless -terminate -core -listenfd %d -listenfd %d -wm %d",
++	wlr_log(WLR_INFO, "WAYLAND_SOCKET=%d Xwayland :%d -dpi 163 -auth /home/don/.Xauthority -rootless -terminate -core -listenfd %d -listenfd %d -wm %d",
+ 		server->wl_fd[1], server->display, server->x_fd[0],
+ 		server->x_fd[1], server->wm_fd[1]);
+ 

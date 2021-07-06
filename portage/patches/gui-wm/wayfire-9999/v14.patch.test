@@ -1,0 +1,30 @@
+--- a/meson.build	2021-04-11 19:46:46.774788427 -0500
++++ b/meson.build	2021-04-11 19:47:37.708431314 -0500
+@@ -28,7 +28,7 @@
+ pixman         = dependency('pixman-1')
+ threads        = dependency('threads')
+ xkbcommon      = dependency('xkbcommon')
+-wlroots        = dependency('wlroots', version: ['>=0.12.0', '<0.13.0'], required: get_option('use_system_wlroots'))
++wlroots        = dependency('wlroots', version: ['>=0.14.0', '<0.15.0'], required: get_option('use_system_wlroots'))
+ wfconfig       = dependency('wf-config', version: ['>=0.7.0', '<0.8.0'], required: get_option('use_system_wfconfig'))
+ 
+ use_system_wlroots = not get_option('use_system_wlroots').disabled() and wlroots.found()
+
+--- a/src/api/wayfire/nonstd/wlroots-full.hpp	2021-04-12 04:15:37.252431648 -0500
++++ b/src/api/wayfire/nonstd/wlroots-full.hpp	2021-04-12 04:17:32.624622036 -0500
+@@ -69,11 +69,10 @@
+     #undef class
+ #endif
+ 
+-#if WLR_HAS_XDG_FOREIGN
+-    #include <wlr/types/wlr_xdg_foreign_registry.h>
+-    #include <wlr/types/wlr_xdg_foreign_v1.h>
+-    #include <wlr/types/wlr_xdg_foreign_v2.h>
+-#endif
++// always include
++#include <wlr/types/wlr_xdg_foreign_registry.h>
++#include <wlr/types/wlr_xdg_foreign_v1.h>
++#include <wlr/types/wlr_xdg_foreign_v2.h>
+ 
+ // Backends
+ #include <wlr/config.h>

@@ -1,0 +1,11 @@
+--- a/src/panel/widgets/window-list/window-list.cpp	2021-03-18 11:40:22.213436100 -0500
++++ b/src/panel/widgets/window-list/window-list.cpp	2021-03-18 11:41:21.940964792 -0500
+@@ -102,7 +102,7 @@
+ 
+ Gtk::Widget* WayfireWindowListBox::get_widget_at(int x)
+ {
+-    Gtk::Allocation given_point{x, get_allocated_height() / 2, 1, 1};
++    Gtk::Allocation given_point{x, WfOption<int> {"panel/launchers_size"} / 4, 1, 1};
+ 
+     /* Widgets are stored bottom to top, so we will return the bottom-most
+      * widget at the given position */

@@ -1,0 +1,48 @@
+--- a/Makefile	2020-09-08 03:20:26.000000000 -0500
++++ b/Makefile	2021-03-01 17:20:31.113981512 -0600
+@@ -177,7 +177,7 @@
+ PROTOCOL_HEADERS += wlr-layer-shell-unstable-v1-protocol.h
+ .endif
+ 
+-all: hikari hikari-unlocker
++all: hikari
+ 
+ version.h:
+ 	echo "#define HIKARI_VERSION \"${VERSION}\"" >> version.h
+@@ -206,7 +203,6 @@
+ 	@rm ${OBJS} 2> /dev/null ||:
+ 	@echo "cleaning executables"
+ 	@rm hikari 2> /dev/null ||:
+-	@rm hikari-unlocker 2> /dev/null ||:
+ 
+ share/man/man1/hikari.1:
+ 	pandoc -M title:"HIKARI(1) ${VERSION} | hikari - Wayland Compositor" -s \
+@@ -241,7 +237,7 @@
+ 
+ dist: distclean hikari-${VERSION}.tar.gz
+ 
+-install: hikari hikari-unlocker share/man/man1/hikari.1
++install: hikari share/man/man1/hikari.1
+ 	mkdir -p ${DESTDIR}/${PREFIX}/bin
+ 	mkdir -p ${DESTDIR}/${PREFIX}/share/man/man1
+ 	mkdir -p ${DESTDIR}/${PREFIX}/share/backgrounds/hikari
+@@ -251,19 +247,15 @@
+ 	sed "s,PREFIX,${PREFIX}," etc/hikari/hikari.conf > ${DESTDIR}/${ETC_PREFIX}/etc/hikari/hikari.conf
+ 	chmod 644 ${DESTDIR}/${ETC_PREFIX}/etc/hikari/hikari.conf
+ 	install -m ${PERMS} hikari ${DESTDIR}/${PREFIX}/bin
+-	install -m 4555 hikari-unlocker ${DESTDIR}/${PREFIX}/bin
+ 	install -m 644 share/man/man1/hikari.1 ${DESTDIR}/${PREFIX}/share/man/man1
+ 	install -m 644 share/backgrounds/hikari/hikari_wallpaper.png ${DESTDIR}/${PREFIX}/share/backgrounds/hikari/hikari_wallpaper.png
+ 	install -m 644 share/wayland-sessions/hikari.desktop ${DESTDIR}/${PREFIX}/share/wayland-sessions/hikari.desktop
+-	install -m 644 etc/pam.d/hikari-unlocker.${OS} ${DESTDIR}/${ETC_PREFIX}/etc/pam.d/hikari-unlocker
+ 
+ uninstall:
+ 	-rm ${DESTDIR}/${PREFIX}/bin/hikari
+-	-rm ${DESTDIR}/${PREFIX}/bin/hikari-unlocker
+ 	-rm ${DESTDIR}/${PREFIX}/share/man/man1/hikari.1
+ 	-rm ${DESTDIR}/${PREFIX}/share/backgrounds/hikari/hikari_wallpaper.png
+ 	-rm ${DESTDIR}/${PREFIX}/share/wayland-sessions/hikari.desktop
+-	-rm ${DESTDIR}/${ETC_PREFIX}/etc/pam.d/hikari-unlocker
+ 	-rm ${DESTDIR}/${ETC_PREFIX}/etc/hikari/hikari.conf
+ 	-rmdir ${DESTDIR}/${ETC_PREFIX}/etc/hikari
+ 	-rmdir ${DESTDIR}/${PREFIX}/share/backgrounds/hikari

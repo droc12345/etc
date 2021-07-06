@@ -1,0 +1,10 @@
+--- a/src/remote-viewer.c	2015-01-12 11:43:05.000000000 -0600
++++ b/src/remote-viewer.c	2020-08-31 11:57:06.036401234 -0500
+@@ -35,6 +35,7 @@
+ #endif
+ 
+ #ifdef HAVE_SPICE_GTK
++#define SPICE_DISABLE_DEPRECATED 1
+ #include <spice-controller.h>
+ #endif
+ 

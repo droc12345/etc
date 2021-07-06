@@ -1,0 +1,39 @@
+--- a/src/main.cpp	2021-01-29 10:32:09.323723600 -0600
++++ b/src/main.cpp	2021-03-10 09:24:21.576082587 -0600
+@@ -175,7 +175,7 @@
+ 
+ int main(int argc, char *argv[])
+ {
+-    wf::log::log_level_t log_level = wf::log::LOG_LEVEL_INFO;
++    wf::log::log_level_t log_level = 0;
+     struct option opts[] = {
+         {
+             "config", required_argument, NULL, 'c'
+@@ -187,6 +187,7 @@
+         {"damage-debug", no_argument, NULL, 'D'},
+         {"damage-rerender", no_argument, NULL, 'R'},
+         {"help", no_argument, NULL, 'h'},
++        {"info", no_argument, NULL, 'i'},
+         {"version", no_argument, NULL, 'v'},
+         {0, 0, NULL, 0}
+     };
+@@ -195,7 +196,7 @@
+     std::string config_backend = WF_DEFAULT_CONFIG_BACKEND;
+ 
+     int c, i;
+-    while ((c = getopt_long(argc, argv, "c:B:dDhRv", opts, &i)) != -1)
++    while ((c = getopt_long(argc, argv, "c:B:dDhiRv", opts, &i)) != -1)
+     {
+         switch (c)
+         {
+@@ -223,6 +224,10 @@
+             log_level = wf::log::LOG_LEVEL_DEBUG;
+             break;
+ 
++          case 'i':
++            log_level = wf::log::LOG_LEVEL_INFO;
++            break;
++
+           case 'v':
+             print_version();
+             break;

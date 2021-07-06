@@ -1,0 +1,11 @@
+--- a/src/background/background.cpp	2021-01-29 10:38:38.363522500 -0600
++++ b/src/background/background.cpp	2021-04-05 15:06:52.473910092 -0500
+@@ -238,7 +238,7 @@
+ 
+     gtk_layer_init_for_window(window.gobj());
+     gtk_layer_set_layer(window.gobj(), GTK_LAYER_SHELL_LAYER_BACKGROUND);
+-    gtk_layer_set_monitor(window.gobj(), this->output->monitor->gobj());
++    gtk_layer_set_monitor(window.gobj(), (GdkMonitor *)NULL);
+ 
+     gtk_layer_set_anchor(window.gobj(), GTK_LAYER_SHELL_EDGE_TOP, true);
+     gtk_layer_set_anchor(window.gobj(), GTK_LAYER_SHELL_EDGE_BOTTOM, true);

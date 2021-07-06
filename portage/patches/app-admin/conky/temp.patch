@@ -1,0 +1,29 @@
+--- a/src/temphelper.c	2020-04-22 05:00:27.972125821 -0500
++++ b/src/temphelper.c	2020-04-22 05:02:13.993259987 -0500
+@@ -83,11 +83,11 @@
+ 
+ int temp_print(char *p, size_t p_max_size, double n, enum TEMP_UNIT input_unit)
+ {
+-	int out;
++/*	int out; */
+ 	size_t plen;
+ 
+-	out = round_to_int_temp(convert_temp_output(n, input_unit));
+-	plen = spaced_print(p, p_max_size, "%d", 3, out);
++/*	out = round_to_int_temp(convert_temp_output(n, input_unit)); */
++	plen = spaced_print(p, p_max_size, "%.2f", 5, convert_temp_output(n, input_unit));
+ 
+ 	return !(plen >= p_max_size);
+ }
+
+--- a/src/linux.c	2020-04-24 10:48:12.725201946 -0500
++++ b/src/linux.c	2020-04-24 10:49:54.244283712 -0500
+@@ -1094,7 +1094,7 @@
+ 	} else if (r >= 100.0 || r == 0) {
+ 		snprintf(p, p_max_size, "%d", (int) r);
+ 	} else {
+-		snprintf(p, p_max_size, "%.1f", r);
++		snprintf(p, p_max_size, "%.3f", r);
+ 	}
+ }
+

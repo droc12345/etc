@@ -1,0 +1,17 @@
+--- a/src/core/output-layout.cpp	2021-04-05 16:44:09.033771051 -0500
++++ b/src/core/output-layout.cpp	2021-04-05 16:45:16.175326507 -0500
+@@ -336,11 +336,11 @@
+         return *mode;
+ 
+         /* Finally, if there isn't any mode (for ex. wayland backend),
+-         * try the wlr_output resolution, falling back to 1200x720
++         * try the wlr_output resolution, falling back to 1920x1080
+          * if width or height is <= 0 */
+         wlr_output_mode default_mode;
+-        auto width   = handle->width > 0 ? handle->width : 1200;
+-        auto height  = handle->height > 0 ? handle->height : 720;
++        auto width   = handle->width > 0 ? handle->width : 1920;
++        auto height  = handle->height > 0 ? handle->height : 1080;
+         auto refresh = handle->refresh > 0 ? handle->refresh : 60000;
+ 
+         default_mode.width   = width;

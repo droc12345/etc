@@ -1,0 +1,11 @@
+--- a/platform/js/src/js-cxxflags.mozbuild	2021-02-08 07:54:44.306010803 -0600
++++ b/platform/js/src/js-cxxflags.mozbuild	2021-02-08 07:50:31.812881070 -0600
+@@ -31,7 +31,7 @@
+ if CONFIG['GNU_CXX']:
+     # Disable strict-aliasing for GCC, which is enabled by default
+     # starting with version 7.1, see Mozilla bug 1363009.
+-    CXXFLAGS += ['-Wno-shadow', '-Werror=format', '-fno-strict-aliasing']
++    CXXFLAGS += ['-Wno-shadow', '-Werror=format', '-Wno-error=format-overflow', '-fno-strict-aliasing']
+ 
+ if CONFIG['JS_HAS_CTYPES'] and CONFIG['MOZ_SYSTEM_FFI']:
+     CXXFLAGS += CONFIG['MOZ_FFI_CFLAGS']

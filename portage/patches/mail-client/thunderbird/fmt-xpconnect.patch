@@ -1,0 +1,8 @@
+--- a/mozilla/js/xpconnect/src/moz.build	2018-07-09 14:54:43.000000000 -0500
++++ b/mozilla/js/xpconnect/src/moz.build	2020-04-06 09:12:56.486323390 -0500
+@@ -67,4 +67,4 @@
+ ]
+ 
+ if CONFIG['GNU_CXX']:
+-    CXXFLAGS += ['-Wno-shadow', '-Werror=format']
++    CXXFLAGS += ['-Wno-shadow', '-Wno-error']

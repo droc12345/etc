@@ -1,0 +1,26 @@
+--- a/src/bar.cpp	2020-12-23 14:33:40.000000000 -0600
++++ b/src/bar.cpp	2021-03-13 14:08:33.763373665 -0600
+@@ -58,6 +58,10 @@
+       layer = GTK_LAYER_SHELL_LAYER_TOP;
+     } else if (value == bar_layer::OVERLAY) {
+       layer = GTK_LAYER_SHELL_LAYER_OVERLAY;
++    } else if (value == bar_layer::BOTTOM) {
++      layer = GTK_LAYER_SHELL_LAYER_BOTTOM;
++    } else if (value == bar_layer::BACKGROUND) {
++      layer = GTK_LAYER_SHELL_LAYER_BACKGROUND;
+     }
+     gtk_layer_set_layer(window_.gobj(), layer);
+   }
+
+
+--- a/include/bar.hpp	2020-12-23 14:33:40.000000000 -0600
++++ a/include/bar.hpp	2021-03-13 14:32:01.893815913 -0600
+@@ -23,6 +23,7 @@
+ };
+ 
+ enum class bar_layer : uint8_t {
++  BACKGROUND,
+   BOTTOM,
+   TOP,
+   OVERLAY,
+

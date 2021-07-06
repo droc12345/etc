@@ -1,0 +1,65 @@
+--- a/src/output/output.cpp	2021-04-22 10:47:47.890639949 -0500
++++ b/src/output/output.cpp	2021-04-22 10:55:05.459428056 -0500
+@@ -53,6 +53,7 @@
+ void wf::output_impl_t::refocus(wayfire_view skip_view, uint32_t layers)
+ {
+     wf::point_t cur_ws = workspace->get_current_workspace();
++    LOGD("inside impl_t::refocus");
+     const auto& view_on_current_ws = [&] (wayfire_view view)
+     {
+         // Make sure the view is at least 10% visible on the
+@@ -98,9 +99,11 @@
+ 
+     if (it == candidates.end())
+     {
++        LOGD("it == candidates.end()");
+         focus_view(nullptr, 0u);
+     } else
+     {
++        LOGD("it != candidates.end()");
+         focus_view(*it, 0u);
+     }
+ }
+@@ -126,7 +129,9 @@
+          * should try to find reasonable focus in any focuseable layers if
+          * that is not the case, for ex. if there is a focused layer by a
+          * layer surface on another output */
++	LOGD("----- layers ", layers, ", focused layer ", focused_layer);
+         layers = all_layers_not_below(focused_layer);
++	LOGD("+++++ layers ", layers, ", focused layer ", focused_layer);
+     }
+ 
+     refocus(skip_view, layers);
+
+
+--- a/src/core/output-layout.cpp	2021-05-01 06:54:27.854536642 -0500
++++ b/src/core/output-layout.cpp	2021-05-01 06:59:53.081409120 -0500
+@@ -325,6 +325,7 @@
+         {
+             if (mode->preferred)
+             {
++                LOGD("returning preferred mode -- each");
+                 return *mode;
+             }
+         }
+@@ -332,8 +333,10 @@
+         /* Couldn't find a preferred mode. Just return the last, which is
+          * usually also the "largest" */
+         wl_list_for_each_reverse(mode, &handle->modes, link)
+-
+-        return *mode;
++        {
++            LOGD("returning preferred mode -- reverse");
++            return *mode;
++        }
+ 
+         /* Finally, if there isn't any mode (for ex. wayland backend),
+          * try the wlr_output resolution, falling back to 1200x720
+@@ -346,6 +349,7 @@
+         default_mode.width   = width;
+         default_mode.height  = height;
+         default_mode.refresh = refresh;
++        LOGD("return defaut mode -- ", width, "x", height, "@", refresh);
+ 
+         return default_mode;
+     }

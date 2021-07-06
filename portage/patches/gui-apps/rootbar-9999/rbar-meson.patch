@@ -1,0 +1,24 @@
+--- a/meson.build	2021-03-25 17:48:04.453055187 -0500
++++ b/meson.build	2021-03-25 17:52:36.181266140 -0500
+@@ -4,8 +4,6 @@
+ inc = include_directories('inc')
+ gtk = dependency('gtk+-3.0')
+ json = dependency('json-c')
+-pulse = dependency('libpulse')
+-pulse_mainloop = dependency('libpulse-mainloop-glib')
+ threads = dependency('threads')
+ wayland = dependency('wayland-client')
+ dl = cc.find_library('dl')
+@@ -30,11 +28,10 @@
+ 'plugins/mpris.c',
+ 'plugins/notification.c',
+ 'plugins/text.c',
+-'plugins/volume.c',
+ 'plugins/window.c',
+ 'plugins/workspace.c',
+ 'proto/wlr-layer-shell-unstable-v1-protocol.c',
+ 'proto/xdg-output-unstable-v1-protocol.c',
+ 'proto/xdg-shell-protocol.c',
+ include_directories : inc,
+-dependencies : [gtk, json, pulse, pulse_mainloop, threads, wayland, dl], install : true)
++dependencies : [gtk, json, threads, wayland, dl], install : true)

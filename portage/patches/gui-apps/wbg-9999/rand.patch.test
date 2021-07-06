@@ -1,0 +1,23 @@
+--- a/main.c	2021-04-29 12:42:53.551713295 -0500
++++ b/main.c	2021-04-29 18:54:07.760562379 -0500
+@@ -14,6 +14,7 @@
+ 
+ #include <sys/signalfd.h>
+ #include <sys/stat.h>
++#include <sys/random.h>
+ 
+ #include <wayland-client.h>
+ #include <wayland-cursor.h>
+@@ -538,8 +539,10 @@
+                 strcat(new_path, "/");
+ 
+             if (random == 1) {
+-                srand(time(0));
+-                int rndm = rand() % image_cnt;
++                unsigned int tmp;
++                getrandom(&tmp, sizeof(unsigned int), GRND_NONBLOCK);
++
++                int rndm = tmp % image_cnt;
+                 strcat(new_path, files_img[rndm]);
+             } else {
+                 strcat(new_path, files_img[image_index]);

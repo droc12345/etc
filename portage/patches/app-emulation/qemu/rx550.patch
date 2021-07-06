@@ -1,0 +1,10 @@
+--- a/hw/vfio/pci-quirks.c	2020-08-11 14:17:15.000000000 -0500
++++ b/hw/vfio/pci-quirks.c	2020-08-30 11:31:10.134024660 -0500
+@@ -1459,6 +1459,7 @@
+         case 0x67B9:
+         case 0x67BA:
+         case 0x67BE:
++        case 0x699F:
+             vdev->resetfn = vfio_radeon_reset;
+             trace_vfio_quirk_ati_bonaire_reset(vdev->vbasedev.name);
+             break;

@@ -1,0 +1,153 @@
+diff --git a/hw/xfree86/drivers/modesetting/driver.c b/hw/xfree86/drivers/modesetting/driver.c
+index 8d29b13..1034ef9 100644
+--- a/hw/xfree86/drivers/modesetting/driver.c
++++ b/hw/xfree86/drivers/modesetting/driver.c
+@@ -34,6 +34,11 @@
+ #endif
+ 
+ #include <unistd.h>
++#include <stdio.h>
++#include <sys/wait.h>
++#include <pthread.h>
++#include <sys/socket.h>
++#include <sys/un.h>
+ #include <fcntl.h>
+ #include "xf86.h"
+ #include "xf86Priv.h"
+@@ -62,6 +67,8 @@
+ 
+ #include "driver.h"
+ 
++#define DRM_HACK_SOCKET_NAME "xorg_drm_master_util"
++
+ static void AdjustFrame(ScrnInfoPtr pScrn, int x, int y);
+ static Bool CloseScreen(ScreenPtr pScreen);
+ static Bool EnterVT(ScrnInfoPtr pScrn);
+@@ -1513,11 +1520,66 @@ msSharedPixmapNotifyDamage(PixmapPtr ppix)
+     return ret;
+ }
+ 
++static int
++send_fd(int sock, int fd)
++{
++    // This function does the arcane magic for sending
++    // file descriptors over unix domain sockets
++    struct msghdr msg;
++    struct iovec iov[1];
++    struct cmsghdr *cmsg = NULL;
++    char ctrl_buf[CMSG_SPACE(sizeof(int))];
++    char data[1];
++
++    memset(&msg, 0, sizeof(struct msghdr));
++    memset(ctrl_buf, 0, CMSG_SPACE(sizeof(int)));
++
++    data[0] = ' ';
++    iov[0].iov_base = data;
++    iov[0].iov_len = sizeof(data);
++
++    msg.msg_name = NULL;
++    msg.msg_namelen = 0;
++    msg.msg_iov = iov;
++    msg.msg_iovlen = 1;
++    msg.msg_controllen =  CMSG_SPACE(sizeof(int));
++    msg.msg_control = ctrl_buf;
++
++    cmsg = CMSG_FIRSTHDR(&msg);
++    cmsg->cmsg_level = SOL_SOCKET;
++    cmsg->cmsg_type = SCM_RIGHTS;
++    cmsg->cmsg_len = CMSG_LEN(sizeof(int));
++
++    *((int *) CMSG_DATA(cmsg)) = fd;
++
++    return sendmsg(sock, &msg, 0);
++}
++
++static void*
++thread_func(void* argument)
++{
++    int ret;
++    int option = *(int *)argument;
++    char cmd[32];
++    sprintf(cmd, "/usr/bin/drm_master_util %s -r", (!option ? "-s" : "-d"));
++
++    ret = system(cmd);
++    if (ret == -1 || WEXITSTATUS(ret) != 0) {
++        fprintf(stderr, "%s\n", strerror(errno));
++        //exit(1);
++    }
++
++    pthread_exit(NULL); // you could also return NULL here to exit no difference
++}
++
+ static Bool
+ SetMaster(ScrnInfoPtr pScrn)
+ {
+     modesettingPtr ms = modesettingPTR(pScrn);
+-    int ret;
++    int ret = 0;
++    pthread_t my_thread;
++    struct sockaddr_un addr;
++    int sock, conn, option = 0;
+ 
+ #ifdef XF86_PDEV_SERVER_FD
+     if (ms->pEnt->location.type == BUS_PLATFORM &&
+@@ -1528,10 +1590,21 @@ SetMaster(ScrnInfoPtr pScrn)
+     if (ms->fd_passed)
+         return TRUE;
+ 
+-    ret = drmSetMaster(ms->fd);
+-    if (ret)
+-        xf86DrvMsg(pScrn->scrnIndex, X_ERROR, "drmSetMaster failed: %s\n",
+-                   strerror(errno));
++    sock = socket(AF_UNIX, SOCK_STREAM, 0);
++    memset(&addr, 0, sizeof(addr));
++    addr.sun_family = AF_UNIX;
++    strcpy(&addr.sun_path[1], DRM_HACK_SOCKET_NAME);
++    bind(sock, (struct sockaddr *)&addr, sizeof(addr));
++
++    listen(sock, 1);
++    pthread_create(&my_thread, NULL, thread_func, &option);
++
++    conn = accept(sock, NULL, 0);
++    send_fd(conn, ms->fd);
++    close(conn);
++    close(sock);
++
++    pthread_join(my_thread, NULL);
+ 
+     return ret == 0;
+ }
+@@ -1769,6 +1842,9 @@ static void
+ LeaveVT(ScrnInfoPtr pScrn)
+ {
+     modesettingPtr ms = modesettingPTR(pScrn);
++    pthread_t my_thread;
++    struct sockaddr_un addr;
++    int sock, conn, option = 1;
+ 
+     xf86_hide_cursors(pScrn);
+ 
+@@ -1780,8 +1856,21 @@ LeaveVT(ScrnInfoPtr pScrn)
+         return;
+ #endif
+ 
+-    if (!ms->fd_passed)
+-        drmDropMaster(ms->fd);
++    sock = socket(AF_UNIX, SOCK_STREAM, 0);
++    memset(&addr, 0, sizeof(addr));
++    addr.sun_family = AF_UNIX;
++    strcpy(&addr.sun_path[1], DRM_HACK_SOCKET_NAME);
++    bind(sock, (struct sockaddr *)&addr, sizeof(addr));
++
++    listen(sock, 1);
++    pthread_create(&my_thread, NULL, thread_func, &option);
++
++    conn = accept(sock, NULL, 0);
++    send_fd(conn, ms->fd);
++    close(conn);
++    close(sock);
++
++    pthread_join(my_thread, NULL);
+ }
+ 
+ /*

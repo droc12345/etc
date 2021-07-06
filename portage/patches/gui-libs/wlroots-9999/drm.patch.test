@@ -1,0 +1,12 @@
+--- a/types/wlr_output.c	2021-03-16 18:30:07.223191707 -0500
++++ b/types/wlr_output.c	2021-03-16 18:40:06.759288030 -0500
+@@ -366,6 +366,8 @@
+ 
+ 	output->display_destroy.notify = handle_display_destroy;
+ 	wl_display_add_destroy_listener(display, &output->display_destroy);
++
++	output->frame_pending = true;
+ }
+ 
+ void wlr_output_destroy(struct wlr_output *output) {
+

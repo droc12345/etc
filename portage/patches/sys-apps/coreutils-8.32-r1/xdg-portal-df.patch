@@ -1,0 +1,18 @@
+--- a/lib/mountlist.c	2020-02-25 07:55:36.000000000 -0600
++++ b/lib/mountlist.c	2021-03-19 15:34:36.341120268 -0500
+@@ -162,12 +162,15 @@
+ # undef closedir
+ #endif
+ 
+ #define ME_DUMMY_0(Fs_name, Fs_type)            \
+   (strcmp (Fs_type, "autofs") == 0              \
++   || strcmp (Fs_type, "devtmpfs") == 0         \
++   || strcmp (Fs_type, "fuse.portal") == 0      \
+    || strcmp (Fs_type, "proc") == 0             \
+    || strcmp (Fs_type, "subfs") == 0            \
+    /* for Linux 2.6/3.x */                      \
+    || strcmp (Fs_type, "debugfs") == 0          \
++   || strcmp (Fs_type, "squashfs") == 0         \
+    || strcmp (Fs_type, "devpts") == 0           \
+    || strcmp (Fs_type, "fusectl") == 0          \
+    || strcmp (Fs_type, "mqueue") == 0           \

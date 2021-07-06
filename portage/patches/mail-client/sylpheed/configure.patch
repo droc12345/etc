@@ -1,0 +1,13 @@
+--- sylpheed-3.7.0/configure.orig	2018-12-02 10:04:28.712989683 -0600
++++ sylpheed-3.7.0/configure	2018-12-02 10:05:03.269434405 -0600
+@@ -16309,10 +16309,6 @@
+ 
+ 			LIBS="$LIBS `$PKG_CONFIG --libs enchant`"
+ 
+-						if $PKG_CONFIG --atleast-version 1.4.2 enchant ; then
+-				CFLAGS="$CFLAGS `$PKG_CONFIG --cflags dbus-glib-1`"
+-				LIBS="$LIBS `$PKG_CONFIG --libs dbus-glib-1`"
+-			fi
+ 		elif $PKG_CONFIG --atleast-version 2.0.12 gtkspell-2.0 ; then
+ 			LIBS="$LIBS -laspell"
+ 		fi

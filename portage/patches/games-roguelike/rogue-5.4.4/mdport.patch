@@ -1,0 +1,10 @@
+--- a/mdport.c	2019-08-03 05:03:51.600010452 -0500
++++ b/mdport.c	2019-08-03 05:13:21.366013582 -0500
+@@ -84,6 +84,7 @@
+ #include <curses.h> /* AIX requires curses.h be included before term.h */
+ 
+ #if defined(HAVE_TERM_H)
++#define NCURSES_INTERNALS
+ #include <term.h>
+ #elif defined(HAVE_NCURSES_TERM_H)
+ #include <ncurses/term.h>

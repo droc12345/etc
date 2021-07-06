@@ -1,0 +1,12 @@
+--- 1/bin/ebuild.sh	2019-06-09 14:33:03.399425609 -0500
++++ 2/bin/ebuild.sh	2019-06-09 14:32:21.967905959 -0500
+@@ -414,7 +414,8 @@
+ 	if [[ $EBUILD_PHASE != depend ]] ; then
+ 		# source the existing profile.bashrcs.
+ 		while read -r x; do
+-			__try_source "${x}"
++			eqawarn "source ${x}"
++			#__try_source "${x}"
+ 		done <<<"${PORTAGE_BASHRC_FILES}"
+ 	fi
+ 

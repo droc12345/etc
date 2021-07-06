@@ -1,0 +1,11 @@
+--- a/js/src/moz.build	2017-04-10 21:13:16.000000000 -0500
++++ b/js/src/moz.build	2020-04-06 09:41:03.261472481 -0500
+@@ -785,7 +785,7 @@
+         DEFINES['FFI_BUILDING'] = True
+ 
+ if CONFIG['GNU_CXX']:
+-    CXXFLAGS += ['-Wno-shadow', '-Werror=format']
++    CXXFLAGS += ['-Wno-shadow', '-Wno-error']
+ 
+ # Suppress warnings in third-party code.
+ if CONFIG['CLANG_CXX']:

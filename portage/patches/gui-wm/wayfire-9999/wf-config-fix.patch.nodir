@@ -1,0 +1,78 @@
+--- a/src/default-config-backend.cpp	2021-04-15 09:15:17.010388187 -0500
++++ b/src/default-config-backend.cpp	2021-04-15 10:35:29.833073690 -0500
+@@ -14,16 +14,9 @@
+ static std::string config_dir, config_file;
+ wf::config::config_manager_t *cfg_manager;
+ 
+-static void readd_watch(int fd)
+-{
+-    inotify_add_watch(fd, config_dir.c_str(), IN_CREATE);
+-    inotify_add_watch(fd, config_file.c_str(), IN_MODIFY);
+-}
+-
+-static void reload_config(int fd)
++static void reload_config()
+ {
+     wf::config::load_configuration_options_from_file(*cfg_manager, config_file);
+-    readd_watch(fd);
+ }
+ 
+ static int handle_config_updated(int fd, uint32_t mask, void *data)
+@@ -53,27 +46,32 @@
+         {
+             event = reinterpret_cast<inotify_event*>(ptr);
+ 
+-            if (event->len == 0)
+-            {
+-                // is file, probably the config file itself
+-                should_reload = true;
+-                continue;
+-            }
+-
+-            if (config_file == event->name)
++            if (event->len)
+             {
+-                should_reload = true;
++                std::string path = config_file.c_str();
++                std::size_t botDirPos = path.find_last_of("/");
++                std::string chk_file = path.substr(botDirPos+1, path.length());
++
++                LOGD("len ", event->len, " check file ", chk_file, " name ", event->name);
++
++                if (chk_file == event->name)
++                {
++                    should_reload = true;
++                    break;
++                }
+             }
+         }
++        if (should_reload)
++        {
++            break;
++        }
+     }
+ 
+     if (should_reload)
+     {
+-        reload_config(fd);
++        usleep(500); // delay loop
++        reload_config();
+         wf::get_core().emit_signal("reload-config", nullptr);
+-    } else
+-    {
+-        readd_watch(fd);
+     }
+ 
+     return 0;
+@@ -98,8 +96,9 @@
+         config = wf::config::build_configuration(
+             get_xml_dirs(), SYSCONFDIR "/wayfire/defaults.ini", config_file);
+ 
+-        int inotify_fd = inotify_init1(IN_CLOEXEC);
+-        reload_config(inotify_fd);
++        int inotify_fd = inotify_init1(IN_CLOEXEC | IN_NONBLOCK);
++        reload_config();
++        inotify_add_watch(inotify_fd, config_dir.c_str(), IN_CREATE);
+ 
+         wl_event_loop_add_fd(wl_display_get_event_loop(display),
+             inotify_fd, WL_EVENT_READABLE, handle_config_updated, NULL);
